@@ -39,6 +39,17 @@ If this fails, you can download the files manually or with the model_downloader.
 import requests
 response = requests.post("http://localhost:8009/text2voice", params={ "text" : "please contribute", "speaker": "en_speaker_3"})
 ```
+The response is a .wav file as bytes. You can save it with:
+
+```python
+import librosa
+from io import BytesIO
+
+# convert to audio file
+audio_file, sr = librosa.load(BytesIO(response.content))
+# save to file
+sf.write(save_file_path, audio_file, sr)
+```
 
 ### For speaker embedding generation
 
@@ -48,6 +59,7 @@ with open("myfile.wav", "rb") as f:
     audio = f.read()
 response = requests.post("http://localhost:8009/create_speaker_embedding", params={ "speaker_name" : "my_new_speaker"}, files={"audio_file": audio})
 ```
+The response is a .npz file as bytes. 
 After the embedding was created it can be used in text2speech synthesis.
 
 ### For voice2voice synthesis
