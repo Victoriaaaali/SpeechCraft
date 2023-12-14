@@ -16,6 +16,7 @@ from huggingface_hub import hf_hub_download
 
 from .model import GPTConfig, GPT
 from .model_fine import FineGPT, FineGPTConfig
+from ..settings import MODELS_DIR
 
 if (
     torch.cuda.is_available() and
@@ -81,10 +82,6 @@ logger = logging.getLogger(__name__)
 CUR_PATH = os.path.dirname(os.path.abspath(__file__))
 
 
-default_cache_dir = os.path.join(os.path.expanduser("~"), ".cache")
-CACHE_DIR = os.path.join(os.getenv("XDG_CACHE_HOME", default_cache_dir), "suno", "bark_v0")
-
-
 def _cast_bool_env_var(s):
     return s.lower() in ('true', '1', 't')
 
@@ -139,16 +136,13 @@ def _grab_best_device(use_gpu=True):
     return device
 
 
-def _get_ckpt_path(model_type, use_small=False):
-    key = model_type
-    if use_small or USE_SMALL_MODELS:
-        key += "_small"
-    return os.path.join(CACHE_DIR, REMOTE_MODEL_PATHS[key]["file_name"])
+def _get_ckpt_path(model_type, use_small: bool = False, path: str = None):
+    model_key = f"{model_type}_small" if use_small or USE_SMALL_MODELS else model_type
+    model_name = REMOTE_MODEL_PATHS[model_key]["file_name"]
+    if path is None:
+        path = MODELS_DIR
+    return os.path.join(path, f"{model_name}")
 
-
-def _download(from_hf_path, file_name):
-    os.makedirs(CACHE_DIR, exist_ok=True)
-    hf_hub_download(repo_id=from_hf_path, filename=file_name, local_dir=CACHE_DIR)
 
 
 class InferenceContext:
@@ -207,8 +201,8 @@ def _load_model(ckpt_path, device, use_small=False, model_type="text"):
     model_key = f"{model_type}_small" if use_small or USE_SMALL_MODELS else model_type
     model_info = REMOTE_MODEL_PATHS[model_key]
     if not os.path.exists(ckpt_path):
-        logger.info(f"{model_type} model not found, downloading into `{CACHE_DIR}`.")
-        _download(model_info["repo_id"], model_info["file_name"])
+        logger.info(f"{model_type} model not found, downloading into `{MODELS_DIR}`.")
+        hf_hub_download(repo_id=model_info["repo_id"], filename=model_info["file_name"], local_dir=MODELS_DIR)
     checkpoint = torch.load(ckpt_path, map_location=device)
     # this is a hack
     model_args = checkpoint["model_args"]
@@ -258,7 +252,7 @@ def _load_codec_model(device):
     return model
 
 
-def load_model(use_gpu=True, use_small=False, force_reload=False, model_type="text"):
+def load_model(use_gpu=True, use_small=False, force_reload=False, model_type="text", path=None):
     _load_model_f = funcy.partial(_load_model, model_type=model_type, use_small=use_small)
     if model_type not in ("text", "coarse", "fine"):
         raise NotImplementedError()
@@ -270,8 +264,11 @@ def load_model(use_gpu=True, use_small=False, force_reload=False, model_type="te
         models_devices[model_key] = device
         device = "cpu"
     if model_key not in models or force_reload:
-        ckpt_path = _get_ckpt_path(model_type, use_small=use_small)
-        clean_models(model_key=model_key)
+        if path.endswith(".ckpt") or path.endswith(".pt") or path.endswith(".bin"):
+            ckpt_path = path
+        else:
+            ckpt_path = _get_ckpt_path(model_type, use_small=use_small, path=path)
+        # clean_models(model_key=model_key)
         model = _load_model_f(ckpt_path, device)
         models[model_key] = model
     if model_type == "text":
@@ -279,6 +276,7 @@ def load_model(use_gpu=True, use_small=False, force_reload=False, model_type="te
     else:
         models[model_key].to(device)
     return models[model_key]
+
 
 
 def load_codec_model(use_gpu=True, force_reload=False):
@@ -303,32 +301,38 @@ def load_codec_model(use_gpu=True, force_reload=False):
 def preload_models(
     text_use_gpu=True,
     text_use_small=False,
+    text_model_path=None,
     coarse_use_gpu=True,
     coarse_use_small=False,
+    coarse_model_path=None,
     fine_use_gpu=True,
     fine_use_small=False,
+    fine_model_path=None,
     codec_use_gpu=True,
     force_reload=False,
+    path=None,
 ):
     """Load all the necessary models for the pipeline."""
     if _grab_best_device() == "cpu" and (
         text_use_gpu or coarse_use_gpu or fine_use_gpu or codec_use_gpu
     ):
         logger.warning("No GPU being used. Careful, inference might be very slow!")
+
     _ = load_model(
-        model_type="text", use_gpu=text_use_gpu, use_small=text_use_small, force_reload=force_reload
+        model_type="text", use_gpu=text_use_gpu, use_small=text_use_small, force_reload=force_reload,
+        path=path if text_model_path is None else text_model_path
     )
     _ = load_model(
         model_type="coarse",
         use_gpu=coarse_use_gpu,
         use_small=coarse_use_small,
         force_reload=force_reload,
+        path=path if coarse_model_path is None else coarse_model_path,
     )
     _ = load_model(
-        model_type="fine", use_gpu=fine_use_gpu, use_small=fine_use_small, force_reload=force_reload
+        model_type="fine", use_gpu=fine_use_gpu, use_small=fine_use_small, force_reload=force_reload, path=path if fine_model_path is None else fine_model_path
     )
     _ = load_codec_model(use_gpu=codec_use_gpu, force_reload=force_reload)
-
 
 ####
 # Generation Functionality
@@ -357,13 +361,16 @@ def _load_history_prompt(history_prompt_input):
     if isinstance(history_prompt_input, str) and history_prompt_input.endswith(".npz"):
         history_prompt = np.load(history_prompt_input)
     elif isinstance(history_prompt_input, str):
-        # make sure this works on non-ubuntu
-        history_prompt_input = os.path.join(*history_prompt_input.split("/"))
-        if history_prompt_input not in ALLOWED_PROMPTS:
-            raise ValueError("history prompt not found")
-        history_prompt = np.load(
-            os.path.join(CUR_PATH, "assets", "prompts", f"{history_prompt_input}.npz")
-        )
+        history_prompt_path = os.path.join(CUR_PATH, "../assets", "prompts", f"{history_prompt_input}.npz")
+        if os.path.isfile(history_prompt_path):
+            history_prompt = np.load(history_prompt_path)
+        else:
+            # why must this be implemented this way? looks overengineered
+            history_prompt_input = os.path.join(*history_prompt_input.split("/"))
+            if history_prompt_input not in ALLOWED_PROMPTS:
+                raise ValueError("history prompt not found")
+
+
     elif isinstance(history_prompt_input, dict):
         assert("semantic_prompt" in history_prompt_input)
         assert("coarse_prompt" in history_prompt_input)

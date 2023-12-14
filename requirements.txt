@@ -1,0 +1,21 @@
+# web server
+uvicorn
+fastapi
+python-multipart
+numpy
+tqdm
+
+# to create wav files
+scipy
+
+# voice generation with bark
+# dont forget to install pytorch gpu pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
+soundfile
+funcy
+
+
+# voice cloning see https://github.com/gitmylo/bark-voice-cloning-HuBERT-quantizer
+encodec # https://github.com/facebookresearch/encodec
+# fairseq; platform_system != "Windows"
+fairseq@https://github.com/Sharrnah/fairseq/releases/download/v0.12.4/fairseq-0.12.4-cp310-cp310-win_amd64.whl
+# audiolm-pytorch

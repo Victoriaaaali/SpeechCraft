@@ -1,2 +1,30 @@
 __pycache__/
 suno_bark.egg-info/
+
+# Ignore output folder and models folder
+output/
+models/
+# added this one because new speakers are saved here
+bark/assets/
+
+# Ignore virtual environment folder
+venv/
+
+### IDE FILES
+
+# Ignore PyCharm files
+.idea/
+
+# Ignore Visual Studio Code files
+.vscode/
+
+# Ignore Python cache files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Ignore distribution folders
+dist/
+build/
+*.egg-info/
