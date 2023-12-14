@@ -1,5 +1,5 @@
     
-# 🐶 Bark with FAST_API and Voice Cloning
+# 🐶 Bark with REST API and Voice Cloning
 
 This repository contains code for:
 - text2speech synthesis by [Suno.ai](https://github.com/suno-ai). This supports different speakers, languages, emotions & singing.
