@@ -7,6 +7,8 @@ This repository contains code for:
 
 All of this is wrapped into a convenient REST API with [FAST_API](https://fastapi.tiangolo.com/)
 
+![image of openapi server](bark_fastapi.PNG)
+
 ## Disclaimer
 This repository is a merge of the orignal [bark repository](https://github.com/suno-ai/bark) and [bark-voice-cloning-HuBert-quantizer](https://github.com/gitmylo/bark-voice-cloning-HuBERT-quantizer/blob/master/readme.md)
 The credit goes to the original authors. Like the original authors, I am also not responsible for any misuse of this repository. Use at your own risk, and please act responsibly.Use at your own risk, and please act responsibly.
