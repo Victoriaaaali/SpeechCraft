@@ -64,7 +64,13 @@ After the embedding was created it can be used in text2speech synthesis.
 
 ### For voice2voice synthesis
 
-ToDo: prepare voice2voice for Rest API
+```python
+import requests
+with open("myfile.wav", "rb") as f:
+    audio = f.read()
+response = requests.post("http://localhost:8009/voice2voice", params={ "speaker_name" : "my_new_speaker"}, files={"audio_file": audio})
+```
+In this example it is assumed that previously a speaker with name "my_new_speaker" was created with the create_speaker_embedding endpoint.
 
 # Contribute
 

@@ -4,6 +4,7 @@ from io import BytesIO
 import fastapi
 import uvicorn
 from fastapi.responses import StreamingResponse
+from scipy.io import wavfile
 
 import text2voice as t2v
 import voice_cloning.embedding_creator as embeding_creator
@@ -13,9 +14,11 @@ from bark.settings import DEFAULT_PORT, DEFAULT_SPEAKER_DIR
 import os
 import numpy as np
 
+from bark.voice2voice import swap_voice_from_audio
+
 app = fastapi.FastAPI(
     title="Bark FastAPI with voice cloning",
-    summary="Infer previously cloned voices",
+    summary="Create audio from text, clone voices and use them. Convert voice2voice",
     version="0.0.1",
     contact={
         "name": "w4hns1nn",
@@ -93,6 +96,36 @@ async def create_speaker_embedding(audio_file: fastapi.UploadFile, speaker_name:
         media_type="application/octet-stream",
         headers={"Content-Disposition": f"attachment; filename={speaker_name}.npz"}
     )
+
+
+@app.post("/voice2voice")
+async def voice2voice(
+        audio_file: fastapi.UploadFile,
+        speaker_name: str,
+):
+    """
+    :param audio_file: the audio file as bytes 5-20s is good length
+    :param speaker_name: how the new speaker / embedding is named
+    :return: the converted audio file as bytes
+    """
+    # convert audio to bytes file
+    audio_bytes = await audio_file.read()
+    temp_audio_file = BytesIO(audio_bytes)
+
+    # inference
+    audio_array, sample_rate = swap_voice_from_audio(temp_audio_file, speaker_name)
+
+    # write speaker embedding to temp file
+    open_file = BytesIO()
+    wavfile.write(open_file, rate=sample_rate, data=audio_array)
+
+    return StreamingResponse(
+        open_file,
+        media_type="application/octet-stream",
+        headers={"Content-Disposition": f"attachment; filename={speaker_name}.npz"}
+    )
+
+
 
 # first time load and install models
 download_all_models_init()
