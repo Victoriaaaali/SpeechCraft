@@ -27,7 +27,8 @@ The credit goes to the original authors. Like the original authors, I am also no
 
 # Usage
 
-1. Start the server with `python bark/server.py --port 8009`
+1. Start the server by running the provided .bat file "start_server.bat" 
+   2. or by using `python bark/server.py --port 8009` make sure the python PYTHONPATH is set to the root of this repository.
 2. To test the server, open `http://localhost:8009/docs` in your browser.
 
 Then make post requests to the server with your favorite tool or library.
