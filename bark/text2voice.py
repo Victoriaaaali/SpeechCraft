@@ -89,32 +89,23 @@ def text2voice(
 
     make_sure_models_are_downloaded(install_path=MODELS_DIR)
 
-    texts = split_and_recombine_text(text)
+    #texts = split_and_recombine_text(text)
 
-    all_parts = []
-    for i, text in tqdm(enumerate(texts), total=len(texts)):
-        full_generation, audio_array = text2voice_with_settings(
-            text,
-            semantic_temp=semantic_temp,
-            semantic_top_k=semantic_top_k,
-            semantic_top_p=semantic_top_p,
-            coarse_temp=coarse_temp,
-            coarse_top_k=coarse_top_k,
-            coarse_top_p=coarse_top_p,
-            fine_temp=fine_temp,
-            voice_name=voice_name_or_embedding_path,
-            use_semantic_history_prompt=True,
-            use_coarse_history_prompt=True,
-            use_fine_history_prompt=True,
-            output_full=True
-        )
-
-        if temp_outfile_path is not None:
-            wavfile.write(temp_outfile_path.replace('.wav', f'_{i}') + '.wav', SAMPLE_RATE, audio_array)
-        all_parts.append(audio_array)
-
-    # combine all parts
-    audio_array = np.concatenate(all_parts, axis=-1)
+    full_generation, audio_array = text2voice_with_settings(
+        text,
+        semantic_temp=semantic_temp,
+        semantic_top_k=semantic_top_k,
+        semantic_top_p=semantic_top_p,
+        coarse_temp=coarse_temp,
+        coarse_top_k=coarse_top_k,
+        coarse_top_p=coarse_top_p,
+        fine_temp=fine_temp,
+        voice_name=voice_name_or_embedding_path,
+        use_semantic_history_prompt=True,
+        use_coarse_history_prompt=True,
+        use_fine_history_prompt=True,
+        output_full=True
+    )
 
     # using virtual file to be able to return it as response instead of saving it
     wf = BytesIO()  # StringIO()

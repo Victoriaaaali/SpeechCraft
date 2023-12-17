@@ -125,6 +125,9 @@ async def voice2voice(
         headers={"Content-Disposition": f"attachment; filename={speaker_name}.npz"}
     )
 
+@app.get("/status")
+def status():
+    return {"status": "ok"}
 
 
 # first time load and install models
