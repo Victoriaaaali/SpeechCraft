@@ -7,7 +7,7 @@ from fastapi.responses import StreamingResponse
 from scipy.io import wavfile
 
 import text2voice as t2v
-import voice_cloning.embedding_creator as embeding_creator
+import voice_cloning.embedding_creator as embedding_creator
 from bark.model_downloader import download_all_models_init
 from bark.settings import DEFAULT_PORT, DEFAULT_SPEAKER_DIR
 
@@ -78,7 +78,7 @@ async def create_speaker_embedding(audio_file: fastapi.UploadFile, speaker_name:
     audio_bytes = await audio_file.read()
     temp_audio_file = BytesIO(audio_bytes)
     # create embedding vector
-    codes, semantic_tokens = embeding_creator.clone_voice(temp_audio_file)
+    codes, semantic_tokens = embedding_creator.clone_voice(temp_audio_file)
 
     # write speaker embedding to file
     if save_in_speaker_dir:

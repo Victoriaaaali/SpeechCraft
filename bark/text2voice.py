@@ -64,7 +64,6 @@ def text2voice_with_settings(text_prompt, semantic_temp=0.7, semantic_top_k=50, 
 def text2voice(
         text: str,
         voice_name_or_embedding_path: str,
-        temp_outfile_path: str = None,
         semantic_temp=0.7,
         semantic_top_k=50,
         semantic_top_p=0.95,
@@ -76,7 +75,6 @@ def text2voice(
     """
     :param text:
     :param voice_name_or_embedding_path:
-    :param temp_outfile_path: If not none, the partial audio files will be stored in that directory
     :param semantic_temp:
     :param semantic_top_k:
     :param semantic_top_p:
