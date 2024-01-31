@@ -14,6 +14,7 @@ from bark.settings import DEFAULT_PORT, DEFAULT_SPEAKER_DIR
 import os
 import numpy as np
 
+from bark.utils import encode_path_safe
 from bark.voice2voice import swap_voice_from_audio
 
 app = fastapi.FastAPI(
@@ -44,6 +45,12 @@ async def text2voice(
     :param voice_name: the name of the voice to be used. Uses the pretrained voices which are stored in models/speakers folder. It is also possible to provide a full path.
     :return: the audio file as bytes
     """
+
+    # validate parameters
+    # remove any illegal characters from text
+    text = encode_path_safe(text)
+
+
     generated_audio_file, sample_rate = t2v.text2voice(
         text=text,
         voice_name_or_embedding_path=voice_name_or_embedding_path,
