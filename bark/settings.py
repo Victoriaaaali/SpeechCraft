@@ -1,6 +1,6 @@
 import os
 
-ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
+ROOT_DIR = os.environ.get('ROOT_DIR', os.path.dirname(os.path.abspath(__file__)))
 MODELS_DIR = os.path.join(os.path.dirname(ROOT_DIR), "models")
 DEFAULT_SPEAKER_DIR = os.path.join(os.path.dirname(ROOT_DIR), "bark", "assets", "prompts")
 
