@@ -17,6 +17,7 @@ from huggingface_hub import hf_hub_download
 from .model import GPTConfig, GPT
 from .model_fine import FineGPT, FineGPTConfig
 from ..settings import MODELS_DIR
+import os
 
 if (
     torch.cuda.is_available() and
@@ -235,7 +236,7 @@ def _load_model(ckpt_path, device, use_small=False, model_type="text"):
     del checkpoint, state_dict
     _clear_cuda_cache()
     if model_type == "text":
-        tokenizer = BertTokenizer.from_pretrained("bert-base-multilingual-cased")
+        tokenizer = BertTokenizer.from_pretrained(os.environ.get('BERT_DIR', "bert-base-multilingual-cased"))
         return {
             "model": model,
             "tokenizer": tokenizer,
