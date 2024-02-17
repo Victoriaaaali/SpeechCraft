@@ -361,14 +361,15 @@ def _load_history_prompt(history_prompt_input):
     if isinstance(history_prompt_input, str) and history_prompt_input.endswith(".npz"):
         history_prompt = np.load(history_prompt_input)
     elif isinstance(history_prompt_input, str):
-        history_prompt_path = os.path.join(CUR_PATH, "../assets", "prompts", f"{history_prompt_input}.npz")
+        history_prompt_root = os.environ.get("EMBEDDINGS_DIR", os.path.join(CUR_PATH, "../assets", "prompts"))
+        history_prompt_path = os.path.join(history_prompt_root, f"{history_prompt_input}.npz")
         if os.path.isfile(history_prompt_path):
             history_prompt = np.load(history_prompt_path)
         else:
             # why must this be implemented this way? looks overengineered
             history_prompt_input = os.path.join(*history_prompt_input.split("/"))
             if history_prompt_input not in ALLOWED_PROMPTS:
-                raise ValueError("history prompt not found")
+                raise ValueError(f"history prompt not found not in {history_prompt_root}")
 
 
     elif isinstance(history_prompt_input, dict):
