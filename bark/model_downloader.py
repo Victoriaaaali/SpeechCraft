@@ -1,7 +1,7 @@
 import os.path
 
 from bark.core.generation import preload_models, load_codec_model
-from bark.settings import MODELS_DIR, get_cpu_or_gpu
+from bark.settings import MODELS_DIR, USE_GPU
 from bark.voice_cloning.customtokenizer import CustomTokenizer
 from bark.voice_cloning.hubert_manager import HuBERTManager
 from bark.voice_cloning.pre_kmeans_hubert import CustomHubert
@@ -40,17 +40,16 @@ def get_hubert_manager_and_model(install_path: str = None):
 
 def make_sure_models_are_downloaded(install_path: str = None):
     # From https://github.com/gitmylo/bark-voice-cloning-HuBERT-quantizer
-    use_gpu = "cuda" in get_cpu_or_gpu()
 
     # download and load all models
     preload_models(
-        text_use_gpu=use_gpu,
+        text_use_gpu=USE_GPU,
         text_use_small=False,
-        coarse_use_gpu=use_gpu,
+        coarse_use_gpu=USE_GPU,
         coarse_use_small=False,
-        fine_use_gpu=use_gpu,
+        fine_use_gpu=USE_GPU,
         fine_use_small=False,
-        codec_use_gpu=use_gpu,
+        codec_use_gpu=USE_GPU,
         force_reload=False,
         path=install_path
     )

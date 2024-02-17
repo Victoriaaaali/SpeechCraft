@@ -1,16 +1,10 @@
 import os
 
 ROOT_DIR = os.environ.get('ROOT_DIR', os.path.dirname(os.path.abspath(__file__)))
-MODELS_DIR = os.path.join(os.path.dirname(ROOT_DIR), "models")
-DEFAULT_SPEAKER_DIR = os.path.join(os.path.dirname(ROOT_DIR), "bark", "assets", "prompts")
+MODELS_DIR = os.path.join(ROOT_DIR, "models")
+DEFAULT_SPEAKER_DIR = os.path.join(ROOT_DIR, "bark", "assets", "prompts")
+DEFAULT_OUTPUT_DIR = os.path.join(ROOT_DIR, "output")
 
-DEFAULT_OUTPUT_DIR = os.path.join(os.path.dirname(ROOT_DIR), "output")
 DEFAULT_PORT = 8009
-
-def get_cpu_or_gpu() -> str:
-    import torch
-    if torch.cuda.is_available():
-        return 'cuda'
-    else:
-        return 'cpu'
+USE_GPU = os.environ.get('USE_GPU', "True").lower() not in ('false', 'f', '0', 'off', 'n', 'no')
 
