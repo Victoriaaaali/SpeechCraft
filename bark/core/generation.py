@@ -360,9 +360,7 @@ def _load_history_prompt(history_prompt_input):
     if isinstance(history_prompt_input, str) and history_prompt_input.endswith(".npz"):
         history_prompt = np.load(history_prompt_input)
     elif isinstance(history_prompt_input, str):
-        history_prompt_root = get_embeddings_dir()
-        history_prompt_path = os.path.join(history_prompt_root, f"{history_prompt_input}.npz")
-
+        history_prompt_path = os.path.join(get_embeddings_dir(), f"{history_prompt_input}.npz")
         if os.path.isfile(history_prompt_path):
             history_prompt = np.load(history_prompt_path)
         else:
