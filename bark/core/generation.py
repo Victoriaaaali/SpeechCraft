@@ -17,6 +17,8 @@ from .model import GPTConfig, GPT
 from .model_fine import FineGPT, FineGPTConfig
 from ..settings import MODELS_DIR
 import os
+import logging
+
 
 if (
     torch.cuda.is_available() and
@@ -358,11 +360,16 @@ SEMANTIC_INFER_TOKEN = 129_599
 
 
 def _load_history_prompt(history_prompt_input):
+    logging.info(history_prompt_input)
+    print(history_prompt_input)
+    logging.info(os.environ.get("EMBEDDINGS_DIR"))
+    print(os.environ.get("EMBEDDINGS_DIR"))
     if isinstance(history_prompt_input, str) and history_prompt_input.endswith(".npz"):
         history_prompt = np.load(history_prompt_input)
     elif isinstance(history_prompt_input, str):
         history_prompt_root = os.environ.get("EMBEDDINGS_DIR", os.path.join(CUR_PATH, "../assets", "prompts"))
         history_prompt_path = os.path.join(history_prompt_root, f"{history_prompt_input}.npz")
+        logging.info(history_prompt_path)
         print(history_prompt_path)
         if os.path.isfile(history_prompt_path):
             history_prompt = np.load(history_prompt_path)
