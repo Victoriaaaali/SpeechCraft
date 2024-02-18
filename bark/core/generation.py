@@ -4,7 +4,6 @@ import re
 
 from encodec import EncodecModel
 import funcy
-import logging
 import numpy as np
 from scipy.special import softmax
 import torch
@@ -15,7 +14,7 @@ from huggingface_hub import hf_hub_download
 
 from .model import GPTConfig, GPT
 from .model_fine import FineGPT, FineGPTConfig
-from ..settings import MODELS_DIR
+from ..settings import MODELS_DIR, get_embeddings_dir
 import os
 import logging
 
@@ -79,9 +78,6 @@ for _, lang in SUPPORTED_LANGS:
 
 
 logger = logging.getLogger(__name__)
-
-
-CUR_PATH = os.path.dirname(os.path.abspath(__file__))
 
 
 def _cast_bool_env_var(s):
@@ -360,17 +356,13 @@ SEMANTIC_INFER_TOKEN = 129_599
 
 
 def _load_history_prompt(history_prompt_input):
-    logging.info(history_prompt_input)
-    print(history_prompt_input)
-    logging.info(os.environ.get("EMBEDDINGS_DIR"))
-    print(os.environ.get("EMBEDDINGS_DIR"))
+
     if isinstance(history_prompt_input, str) and history_prompt_input.endswith(".npz"):
         history_prompt = np.load(history_prompt_input)
     elif isinstance(history_prompt_input, str):
-        history_prompt_root = os.environ.get("EMBEDDINGS_DIR", os.path.join(CUR_PATH, "../assets", "prompts"))
+        history_prompt_root = get_embeddings_dir()
         history_prompt_path = os.path.join(history_prompt_root, f"{history_prompt_input}.npz")
-        logging.info(history_prompt_path)
-        print(history_prompt_path)
+
         if os.path.isfile(history_prompt_path):
             history_prompt = np.load(history_prompt_path)
         else:
