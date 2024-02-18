@@ -8,3 +8,9 @@ DEFAULT_OUTPUT_DIR = os.path.join(ROOT_DIR, "output")
 DEFAULT_PORT = 8009
 USE_GPU = os.environ.get('USE_GPU', "True").lower() not in ('false', 'f', '0', 'off', 'n', 'no')
 
+def get_cpu_or_gpu() -> str:
+    import torch
+    if torch.cuda.is_available():
+        return 'cuda'
+    else:
+        return 'cpu'
