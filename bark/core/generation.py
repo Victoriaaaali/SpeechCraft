@@ -363,6 +363,7 @@ def _load_history_prompt(history_prompt_input):
     elif isinstance(history_prompt_input, str):
         history_prompt_root = os.environ.get("EMBEDDINGS_DIR", os.path.join(CUR_PATH, "../assets", "prompts"))
         history_prompt_path = os.path.join(history_prompt_root, f"{history_prompt_input}.npz")
+        print(history_prompt_path)
         if os.path.isfile(history_prompt_path):
             history_prompt = np.load(history_prompt_path)
         else:
