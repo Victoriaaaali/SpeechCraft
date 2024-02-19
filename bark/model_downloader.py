@@ -1,7 +1,8 @@
 import os.path
 
 from bark.core.generation import preload_models, load_codec_model
-from bark.settings import MODELS_DIR, USE_GPU, get_cpu_or_gpu
+from bark.settings import MODELS_DIR, USE_GPU
+from bark.utils import get_cpu_or_gpu
 from bark.voice_cloning.customtokenizer import CustomTokenizer
 from bark.voice_cloning.hubert_manager import HuBERTManager
 from bark.voice_cloning.pre_kmeans_hubert import CustomHubert

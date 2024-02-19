@@ -2,6 +2,7 @@ from io import BytesIO
 
 import torchaudio
 
+import bark.utils
 from bark import settings
 from bark.core.api import semantic_to_waveform
 
@@ -31,7 +32,7 @@ def swap_voice_from_audio(
         wav = wav.mean(0, keepdim=True)
 
     wav = convert_audio(wav, sr, model.sample_rate, model.channels)
-    device = settings.get_cpu_or_gpu()
+    device = bark.utils.get_cpu_or_gpu()
     wav = wav.to(device)
 
     # run inference

@@ -1,14 +1,9 @@
-from tqdm import tqdm
-
-import numpy as np
 from bark.core.generation import SAMPLE_RATE, codec_decode, generate_coarse, generate_fine, generate_text_semantic
 from bark.model_downloader import make_sure_models_are_downloaded
 from bark.settings import MODELS_DIR
 
 from io import BytesIO
 from scipy.io import wavfile
-
-from bark.utils import split_and_recombine_text
 
 
 def text2voice_with_settings(text_prompt, semantic_temp=0.7, semantic_top_k=50, semantic_top_p=0.95, coarse_temp=0.7, coarse_top_k=50, coarse_top_p=0.95, fine_temp=0.5, voice_name=None, use_semantic_history_prompt=True, use_coarse_history_prompt=True, use_fine_history_prompt=True, output_full=False):

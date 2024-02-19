@@ -5,7 +5,8 @@ import torch
 import numpy as np
 
 from bark.model_downloader import get_hubert_manager_and_model
-from bark.settings import get_cpu_or_gpu, DEFAULT_SPEAKER_DIR
+from bark.settings import DEFAULT_SPEAKER_DIR
+from bark.utils import get_cpu_or_gpu
 
 
 def clone_voice(audio_file: BytesIO | str):

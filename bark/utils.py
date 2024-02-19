@@ -100,3 +100,11 @@ def split_and_recombine_text(text, desired_length=100, max_length=150):
     rv = [s for s in rv if len(s) > 0 and not re.match(r"^[\s\.,;:!?]*$", s)]
 
     return rv
+
+
+def get_cpu_or_gpu() -> str:
+    import torch
+    if torch.cuda.is_available():
+        return 'cuda'
+    else:
+        return 'cpu'

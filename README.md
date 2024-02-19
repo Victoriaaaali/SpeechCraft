@@ -76,6 +76,12 @@ response = requests.post("http://localhost:8009/voice2voice", params={ "speaker_
 ```
 In this example it is assumed that previously a speaker with name "my_new_speaker" was created with the create_speaker_embedding endpoint.
 
+# Cloud environments
+
+All settings relevant for execution are stored in settings.py and adjustable via environment variables.
+When run in docker or a cloud environment, just set the environment variables accordingly.
+
+
 # Contribute
 
 any help with maintaining and extending the package is welcome. Feel free to open an issue or a pull request.

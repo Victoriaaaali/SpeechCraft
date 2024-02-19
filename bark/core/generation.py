@@ -14,7 +14,7 @@ from huggingface_hub import hf_hub_download
 
 from .model import GPTConfig, GPT
 from .model_fine import FineGPT, FineGPTConfig
-from ..settings import MODELS_DIR, get_embeddings_dir
+from bark.settings import MODELS_DIR, get_embeddings_dir, USE_SMALL_MODELS, GLOBAL_ENABLE_MPS, OFFLOAD_CPU
 import os
 import logging
 
@@ -78,16 +78,6 @@ for _, lang in SUPPORTED_LANGS:
 
 
 logger = logging.getLogger(__name__)
-
-
-def _cast_bool_env_var(s):
-    return s.lower() in ('true', '1', 't')
-
-
-USE_SMALL_MODELS = _cast_bool_env_var(os.environ.get("SUNO_USE_SMALL_MODELS", "False"))
-GLOBAL_ENABLE_MPS = _cast_bool_env_var(os.environ.get("SUNO_ENABLE_MPS", "False"))
-OFFLOAD_CPU = _cast_bool_env_var(os.environ.get("SUNO_OFFLOAD_CPU", "False"))
-
 
 REMOTE_MODEL_PATHS = {
     "text_small": {
