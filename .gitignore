@@ -4,8 +4,10 @@ suno_bark.egg-info/
 # Ignore output folder and models folder
 output/
 models/
+text2voice/models/
+text2voice/output/
 # added this one because new speakers are saved here
-bark/assets/
+text2voice/assets/
 
 # Ignore virtual environment folder
 venv/

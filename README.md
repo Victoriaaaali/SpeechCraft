@@ -1,31 +1,80 @@
     
-# 🐶 Bark with REST API and Voice Cloning
+# Text2Speech & voice cloning by SocAIty
 
-This repository contains code for:
-- text2speech synthesis by [Suno.ai](https://github.com/suno-ai). This supports different speakers, languages, emotions & singing.
-- speaker generation aka voice cloning by [gitmylo](https://github.com/gitmylo)
+Ever wanted to create natural sounding speech from text or clone a voice? 
+Perfect for creating voiceovers, audiobooks, or just having fun.
 
-All of this is wrapped into a convenient REST API with [FAST_API](https://fastapi.tiangolo.com/)
+Features:
+- text2speech synthesis with the 🐶 Bark model of [Suno.ai](https://github.com/suno-ai)
+  - Generate text in different languages
+  - Supports emotions & singing.
+- speaker generation / embedding generation aka voice cloning 
+- voice2voice synthesis: given an audio file, generate a new audio file with the voice of a different speaker
+- Convenient deployment ready web API with [FastTaskAPI](https://github.com/SocAIty/FastTaskAPI)
+- Automatic download of models
 
-![image of openapi server](bark_fastapi.PNG)
+## Example generations and cloned voices
 
-The repos also simplifies setup of the bark repos and clone-voice repos, because all models are automatically downloaded.
+... Coming soon!
 
+# Installation
 
-## Disclaimer
-This repository is a merge of the orignal [bark repository](https://github.com/suno-ai/bark) and [bark-voice-cloning-HuBert-quantizer](https://github.com/gitmylo/bark-voice-cloning-HuBERT-quantizer/blob/master/readme.md)
-The credit goes to the original authors. Like the original authors, I am also not responsible for any misuse of this repository. Use at your own risk, and please act responsibly.
-
-
-# Setup
-
-1. Clone the repository.
+With PIP
+```bash
+# from PyPi
+pip install socaity-text2voice
+# or from GitHub for the newest version.
+pip install git+https://github.com/SocAIty/text2speech
+```
+Or clone and work with the repository.1. Clone the repository.
 2. (Optional) Create a virtual environment. With `python -m venv venv` and activate it with `venv/Scripts/activate`.
 3. Install the requirements.
 `pip install -r requirements.txt`
 4. Don't forget to install pytorch gpu version (with `pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118`)
 
+The code runs fine on Windows and Linux. 
+
 # Usage
+We provide three ways to use the face swapping functionality.
+1. [Direct module import and inference](#Inference-from-script) 
+2. [By deploying and calling the web service](#Web-Service)
+3. As part of the [socaity SDK](https://github.com/SocAIty/socaity).  # coming soon
+
+
+## Inference from script
+
+```python
+import text2voice as t2v
+
+# simple text2speech synthesis
+audio_numpy, sample_rate = t2v.text2voice("I love socaity [laughs]", speaker_name="en_speaker_3")
+
+# speaker embedding generation
+embedding = voice2embedding(audio_file="voice_sample_15s.wav", speaker_name="hermine").save_to_speaker_lib()
+
+# text2speech synthesis with cloned voice or embedding
+audio_with_cloned_voice, sample_rate = text2voice(sample_text, voice=embedding)  # also works with voice="hermine"
+
+# voice2voice synthesis
+cloned_audio = voice2voice(audio_file="my_audio_file.wav", voice_name_or_embedding_path="hermine")
+
+```
+Use the following code to convert and save the audio file with the [media-toolkit](https://github.com/SocAIty/media-toolkit) module.
+```python
+from media_toolkit import AudioFile
+audio = AudioFile().from_np_array(audio_numpy, sr=sample_rate)
+audio.save("my_new_audio.wav")
+```
+
+
+
+
+
+## Web Service
+
+
+![image of openapi server](bark_fastapi.PNG)
+
 
 1. Start the server by running the provided .bat file "start_server.bat" 
    2. or by using `python bark/server.py --port 8009` make sure the python PYTHONPATH is set to the root of this repository.
@@ -41,7 +90,7 @@ If this fails, you can download the files manually or with the model_downloader.
 
 ```python
 import requests
-response = requests.post("http://localhost:8009/text2voice", params={ "text" : "please contribute", "speaker": "en_speaker_3"})
+response = requests.post("http://localhost:8009/text2voice", params={ "text" : "please contribute", "voice": "en_speaker_3"})
 ```
 The response is a .wav file as bytes. You can save it with:
 
@@ -76,11 +125,20 @@ response = requests.post("http://localhost:8009/voice2voice", params={ "speaker_
 ```
 In this example it is assumed that previously a speaker with name "my_new_speaker" was created with the create_speaker_embedding endpoint.
 
+
 # Cloud environments
 
 All settings relevant for execution are stored in settings.py and adjustable via environment variables.
 When run in docker or a cloud environment, just set the environment variables accordingly.
 
+
+# Comparison to other t2s libraries
+
+- Coqui-TTS: Does NOT easily run on windows. Supports more different models.
+
+# Disclaimer
+This repository is a merge of the orignal [bark repository](https://github.com/suno-ai/bark) and [bark-voice-cloning-HuBert-quantizer](https://github.com/gitmylo/bark-voice-cloning-HuBERT-quantizer/blob/master/readme.md) by [gitmylo](https://github.com/gitmylo)
+The credit goes to the original authors. Like the original authors, I am also not responsible for any misuse of this repository. Use at your own risk, and please act responsibly.
 
 # Contribute
 
