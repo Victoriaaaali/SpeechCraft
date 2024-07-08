@@ -11,7 +11,6 @@ import os
 
 from speechcraft.supp.utils import encode_path_safe
 
-
 app = FastTaskAPI(
     provider=PROVIDER,
     app=fastapi.FastAPI(
@@ -24,7 +23,7 @@ app = FastTaskAPI(
         })
 )
 
-@app.task_endpoint(path="/speechcraft", queue_size=10)
+@app.task_endpoint(path="/text2voice", queue_size=10)
 def text2voice(
         job: JobProgress,
         text: str,

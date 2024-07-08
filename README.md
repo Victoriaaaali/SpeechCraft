@@ -10,11 +10,11 @@ Ever wanted to create natural sounding speech from text, clone a voice or sound 
 SpeechCraft is ideal for creating voiceovers, audiobooks, or just having fun.
 
 # Features:
-- text2speech synthesis with the 🐶 Bark model of [Suno.ai](https://github.com/suno-ai)
+- Text2speech synthesis with the 🐶 Bark model of [Suno.ai](https://github.com/suno-ai)
   - Generate text in different languages
   - Supports emotions & singing.
-- speaker generation / embedding generation aka voice cloning 
-- voice2voice synthesis: given an audio file, generate a new audio file with the voice of a different speaker.
+- Speaker generation / embedding generation aka voice cloning 
+- Voice2voice synthesis: given an audio file, generate a new audio file with the voice of a different speaker.
 - Convenient deployment ready web API with [FastTaskAPI](https://github.com/SocAIty/FastTaskAPI)
 - Automatic download of models
   
@@ -33,7 +33,7 @@ Also check-out other [socaity projects](https://github.com/orgs/SocAIty/reposito
 
 https://github.com/SocAIty/SpeechCraft/assets/7961324/dbf905ea-df37-4e52-9e93-a9833352459d
 
-The hermine voice was generated with the [voice_clone_test_voice_1.wav](docs/voice_clone_test_voice_1.wav) file with around 11 seconds of clear speech.
+The hermine voice was generated with the [voice_clone_test_voice_1.wav](https://github.com/SocAIty/SpeechCraft/tree/main/test/test_files/voice_clone_test_voice_1.wav) file with around 11 seconds of clear speech.
 
 https://github.com/SocAIty/SpeechCraft/assets/7961324/71a039c7-e665-4576-91c7-729052e05b03
 
@@ -103,7 +103,8 @@ audio.save("my_new_audio.wav")
 
 ## Web Service
 
-![image of openapi server](bark_fastapi.PNG)
+![image of openapi server](docs/server_screenshot.png)
+
 
 From python:
 
@@ -126,13 +127,15 @@ If this fails, you can download the files manually or with the model_downloader.
 
 ### How to send requests
 
+NOTE: The Webservice is built with FastTaskAPI. In this regard, for each request it will create a task and return a job id
+
+
 We highly recommend to use the media-toolkit package for file transmission. It will make your life much easier.
 ```python
 from media_toolkit import AudioFile
 
 # text2speech
 response = httpx.post("http://localhost:8009/text2voice", params={ "text" : "please contribute", "voice": "en_speaker_3"})
-my_audio = AudioFile().from_httpx_response(response)
 
 # voice cloning
 audio = AudioFile().from_file("myfile.wav")
@@ -147,8 +150,6 @@ response = httpx.post(
     params={ "voice_name" : "hermine"}, 
     files={"audio": audio.to_httpx_send_able_tuple()}
 )
-my_audio = AudioFile().from_httpx_response(response)
-
 ```
 
 This example shows how to do it with plain python requests.
@@ -176,6 +177,22 @@ response = requests.post(
     files={"audio_file": audio}
 )
 ```
+### Parse the results
+
+The response is a json that includes the job id and meta information.
+By sending then a request to the job endpoint you can check the status and progress of the job.
+If the job is finished, you will get the result, including the swapped image.
+```python
+import requests
+from media_toolkit import AudioFile
+
+# check status of job
+response = requests.get(f"http://localhost:8009/api/job/{job.json()['job_id']}")
+# convert result to image file
+audio = AudioFile().from_bytes(response.json()['result']))
+```
+If you want it more convenient use [fastSDK](https://github.com/SocAIty/fastSDK) to built your client,
+or the [socaity SDK](https://github.com/SocAIty/socaity).
 
 # Details and guidelines
 
