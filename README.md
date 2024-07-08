@@ -17,12 +17,7 @@ SpeechCraft is ideal for creating voiceovers, audiobooks, or just having fun.
 - voice2voice synthesis: given an audio file, generate a new audio file with the voice of a different speaker.
 - Convenient deployment ready web API with [FastTaskAPI](https://github.com/SocAIty/FastTaskAPI)
 - Automatic download of models
-
-
-## Example generations and cloned voices
-
-The hermine voice was generated with the [voice_clone_test_voice_1.wav](docs/voice_clone_test_voice_1.wav) file with around 11 seconds of clear speech.
-
+  
 # Quick Links
 
 - [Installation](#Installation)
@@ -33,6 +28,15 @@ The hermine voice was generated with the [voice_clone_test_voice_1.wav](docs/voi
 Also check-out other [socaity projects](https://github.com/orgs/SocAIty/repositories) for generative AI:
 - High quality [voice2voice](https://github.com/SocAIty/Retrieval-based-Voice-Conversion-FastAPI) with retrieval based voice conversion.
 - Face swapping with [Face2Face](https://github.com/SocAIty/face2face) 
+
+## Example generations and cloned voices
+
+https://github.com/SocAIty/SpeechCraft/assets/7961324/dbf905ea-df37-4e52-9e93-a9833352459d
+
+The hermine voice was generated with the [voice_clone_test_voice_1.wav](docs/voice_clone_test_voice_1.wav) file with around 11 seconds of clear speech.
+
+https://github.com/SocAIty/SpeechCraft/assets/7961324/71a039c7-e665-4576-91c7-729052e05b03
+
 
 # Installation
 
