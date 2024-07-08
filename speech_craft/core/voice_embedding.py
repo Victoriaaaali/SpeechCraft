@@ -3,7 +3,7 @@ from io import BytesIO
 
 import numpy as np
 
-from text2voice.settings import EMBEDDINGS_DIR
+from speech_craft.settings import EMBEDDINGS_DIR
 
 
 class VoiceEmbedding:

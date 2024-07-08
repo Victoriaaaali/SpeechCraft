@@ -2,8 +2,8 @@ import argparse
 import os
 
 from scipy.io.wavfile import write as write_wav
-from text2voice.core.api import generate_audio
-from text2voice.core.generation import SAMPLE_RATE
+from speech_craft.core.api import generate_audio
+from speech_craft.core.generation import SAMPLE_RATE
 
 
 def cli():

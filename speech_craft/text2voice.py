@@ -1,9 +1,9 @@
 from typing import Union
 
-from text2voice.core.voice_embedding import VoiceEmbedding
-from text2voice.core.generation import SAMPLE_RATE, codec_decode, generate_coarse, generate_fine, generate_text_semantic
-from text2voice.supp.model_downloader import make_sure_models_are_downloaded
-from text2voice.settings import MODELS_DIR
+from speech_craft.core.voice_embedding import VoiceEmbedding
+from speech_craft.core.generation import SAMPLE_RATE, codec_decode, generate_coarse, generate_fine, generate_text_semantic
+from speech_craft.supp.model_downloader import make_sure_models_are_downloaded
+from speech_craft.settings import MODELS_DIR
 
 
 def text2voice_advanced(

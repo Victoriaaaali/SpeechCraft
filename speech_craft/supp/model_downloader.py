@@ -1,11 +1,11 @@
 import os.path
 
-from text2voice.core.generation import preload_models, load_codec_model
-from text2voice.settings import MODELS_DIR, USE_GPU
-from text2voice.supp.utils import get_cpu_or_gpu
-from text2voice.voice_cloning.custom_tokenizer import CustomTokenizer
-from text2voice.voice_cloning.hubert_manager import HuBERTManager
-from text2voice.voice_cloning.pre_kmeans_hubert import CustomHubert
+from speech_craft.core.generation import preload_models, load_codec_model
+from speech_craft.settings import MODELS_DIR, USE_GPU
+from speech_craft.supp.utils import get_cpu_or_gpu
+from speech_craft.voice_cloning.custom_tokenizer import CustomTokenizer
+from speech_craft.voice_cloning.hubert_manager import HuBERTManager
+from speech_craft.voice_cloning.pre_kmeans_hubert import CustomHubert
 
 
 def get_hubert_manager_and_model(install_path: str = None):
@@ -68,7 +68,7 @@ def download_all_models_init(install_path: str = None):
     if not os.path.isfile(os.path.join(install_path, 'hubert_base_ls960_23.pth')):
         get_hubert_manager_and_model(install_path=install_path)
 
-    # download files for text2voice
+    # download files for speech_craft
     if not os.path.isfile(os.path.join(install_path, 'coarse_2.pt')):
         make_sure_models_are_downloaded(install_path=install_path)
 

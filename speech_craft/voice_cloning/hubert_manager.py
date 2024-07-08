@@ -28,7 +28,7 @@ class HuBERTManager:
     def make_sure_tokenizer_installed(
             local_tokenizer_path: str,
             model: str = 'hubert_base_ls960_23.pth',
-            repo: str = 'GitMylo/text2voice-voice-cloning',
+            repo: str = 'GitMylo/speech_craft-voice-cloning',
     ):
         """
         Downloads the tokenizer from the huggingface hub if not already downloaded

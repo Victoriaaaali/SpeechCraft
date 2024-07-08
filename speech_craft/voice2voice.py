@@ -4,9 +4,10 @@ import torchaudio
 from encodec.utils import convert_audio
 import numpy as np
 
-import text2voice.supp.utils
-from text2voice.core.api import semantic_to_waveform
-from text2voice.supp.model_downloader import get_hubert_manager_and_model
+import speech_craft.supp.utils
+from speech_craft.core.api import semantic_to_waveform
+from speech_craft.settings import MODELS_DIR
+from speech_craft.supp.model_downloader import get_hubert_manager_and_model, make_sure_models_are_downloaded
 
 
 def voice2voice(
@@ -19,6 +20,8 @@ def voice2voice(
     :param speaker_name_or_embedding_path: the voice embedding to use for the swap
     :return:
     """
+    #
+    make_sure_models_are_downloaded(install_path=MODELS_DIR)
     # Load the HuBERT model
     hubert_manager, hubert_model, model, tokenizer = get_hubert_manager_and_model()
 
@@ -28,7 +31,7 @@ def voice2voice(
         wav = wav.mean(0, keepdim=True)
 
     wav = convert_audio(wav, sr, model.sample_rate, model.channels)
-    device = text2voice.supp.utils.get_cpu_or_gpu()
+    device = speech_craft.supp.utils.get_cpu_or_gpu()
     wav = wav.to(device)
 
     # run inference
@@ -36,16 +39,22 @@ def voice2voice(
     semantic_vectors = hubert_model.forward(wav, input_sample_hz=model.sample_rate)
     semantic_tokens = tokenizer.get_token(semantic_vectors)
 
-    audio = semantic_to_waveform(
+    # move semantic tokens to cpu
+    semantic_tokens = semantic_tokens.cpu().numpy()
+
+    # convert voice2voice
+    output_full = False
+    out = semantic_to_waveform(
         semantic_tokens,
         history_prompt=speaker_name_or_embedding_path,
         temp=0.7,
-        output_full=True
+        output_full=output_full
     )
+    if output_full:
+        full_generation, audio_arr = out
+    else:
+        audio_arr = out
 
-    audio_array = audio.cpu().numpy().squeeze()
-    sample_rate = model.generation_config.sample_rate
-
-    return audio_array, sample_rate
+    return audio_arr, model.sample_rate
 
 
