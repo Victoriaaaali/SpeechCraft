@@ -1,4 +1,4 @@
-from speech_craft import text2voice, voice2voice, voice2embedding
+from speechcraft import text2voice, voice2voice, voice2embedding
 from media_toolkit import AudioFile
 
 sample_text = "I love society [laughs]! [happy] What a day to make voice overs with artificial intelligence."

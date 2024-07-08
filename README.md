@@ -36,7 +36,9 @@ Also check-out other [socaity projects](https://github.com/orgs/SocAIty/reposito
 
 # Installation
 
-With PIP
+The code runs fine on Windows and Linux. 
+
+### With PIP
 ```bash
 # from PyPi (without web API)
 pip install speechcraft
@@ -45,14 +47,22 @@ pip install speechcraft[full]
 # or from GitHub for the newest version.
 pip install git+https://github.com/SocAIty/speechcraft
 ```
-Or clone and work with the repository.
+For windows you will also need to install fairseq from a different source. 
+`python 
+pip install fairseq@https://github.com/Sharrnah/fairseq/releases/download/v0.12.4/fairseq-0.12.4-cp310-cp310-win_amd64.whl
+`
+
+To use a GPU don't forget to install pytorch GPU:
+`pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118`
+
+
+### Or clone and work with the repository.
 1. Clone the repository.
 2. (Optional) Create a virtual environment. With `python -m venv venv` and activate it with `venv/Scripts/activate`.
-3. Install the requirements.
-`pip install -r requirements.txt`
-4. Don't forget to install pytorch gpu version (with `pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118`)
+3. Install `pip install .`
+4. Don't forget to install fairseq and pytorch GPU.
 
-The code runs fine on Windows and Linux. 
+
 
 # Usage
 We provide three ways to use the face swapping functionality.
@@ -64,7 +74,7 @@ We provide three ways to use the face swapping functionality.
 ## Inference from script
 
 ```python
-from speech_craft import text2voice, voice2embedding, voice2voice
+from speechcraft import text2voice, voice2embedding, voice2voice
 
 # simple text2speech synthesis
 text = "I love society [laughs]! [happy] What a day to make voice overs with artificial intelligence."
@@ -94,7 +104,7 @@ audio.save("my_new_audio.wav")
 From python:
 
 ```python
-import speech_craft as sc
+import speechcraft as sc
 
 sc.start_server(port=8009)
 ```
