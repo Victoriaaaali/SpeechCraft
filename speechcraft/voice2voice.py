@@ -4,6 +4,7 @@ import torchaudio
 from encodec.utils import convert_audio
 import numpy as np
 
+
 import speechcraft.supp.utils
 from speechcraft.core.api import semantic_to_waveform
 from speechcraft.settings import MODELS_DIR
@@ -12,12 +13,12 @@ from speechcraft.supp.model_downloader import get_hubert_manager_and_model, make
 
 def voice2voice(
         audio_file: BytesIO | str,
-        speaker_name_or_embedding_path: str,
+        voice_name: str,
     ) -> tuple[np.ndarray, int]:
     """
     Takes voice and intonation from speaker_embedding and applies it to swap_audio_filename
     :param audio_file: the audio file to swap the voice. Can be a path or a file handle
-    :param speaker_name_or_embedding_path: the voice embedding to use for the swap
+    :param voice_name: the voice name or the voice embedding to use for the swap
     :return:
     """
     #
@@ -46,7 +47,7 @@ def voice2voice(
     output_full = False
     out = semantic_to_waveform(
         semantic_tokens,
-        history_prompt=speaker_name_or_embedding_path,
+        history_prompt=voice_name,
         temp=0.7,
         output_full=output_full
     )

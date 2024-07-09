@@ -32,12 +32,12 @@ class VoiceEmbedding:
         return speaker_embedding_file
 
     def to_bytes_io(self):
-        with BytesIO() as f:
-            np.savez(
-                f, fine_prompt=self.fine_prompt, coarse_prompt=self.coarse_prompt,semantic_prompt=self.semantic_prompt
-            )
-            f.seek(0)
-            return f
+        f = BytesIO()
+        np.savez(
+           f, fine_prompt=self.fine_prompt, coarse_prompt=self.coarse_prompt,semantic_prompt=self.semantic_prompt
+        )
+        f.seek(0)
+        return f
 
     @staticmethod
     def load(path_or_speaker_name: str):

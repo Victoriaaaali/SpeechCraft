@@ -15,7 +15,7 @@ audio_with_cloned_voice = AudioFile().from_np_array(tts_new_speaker, sr=sample_r
 audio_with_cloned_voice.save("hermine_i_love_socaity.wav")
 
 # test voice2voice
-v2v_audio_np, sample_rate = voice2voice(audio_file="test_files/voice_clone_test_voice_2.wav", speaker_name_or_embedding_path="hermine")
+v2v_audio_np, sample_rate = voice2voice(audio_file="test_files/voice_clone_test_voice_2.wav", voice_name="hermine")
 v2v_audio = AudioFile().from_np_array(v2v_audio_np, sr=sample_rate)
 v2v_audio.save("potter_to_hermine.wav")
 a = 1

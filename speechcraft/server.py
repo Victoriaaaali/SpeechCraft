@@ -15,7 +15,8 @@ app = FastTaskAPI(
     provider=PROVIDER,
     app=fastapi.FastAPI(
         title="SpeechCraft by SocAIty.",
-        summary="Create audio from text, clone voices and use them. Convert voice2voice. Bark model.",
+        summary="Create audio from text, clone voices and use them. Convert voice2voice. "
+                "Generative text-to-audio Bark model.",
         version="0.0.0",
         contact={
             "name": "SocAIty",
@@ -47,7 +48,7 @@ def text2voice(
     # remove any illegal characters from text
     text = encode_path_safe(text)
 
-    job.set_progress(0.1, "Started speechcraft from text.")
+    job.set_status(progress=0.2, message="Started text2voice.")
 
     generated_audio_file, sample_rate = t2v.text2voice(
         text=text,
@@ -70,6 +71,7 @@ def text2voice(
 
 @app.task_endpoint("/voice2embedding")
 def voice2embedding(
+        job: JobProgress,
         audio_file: AudioFile,
         voice_name: str = "new_speaker",
         save: bool = True
@@ -82,10 +84,12 @@ def voice2embedding(
     """
     # create embedding vector
     bytesio = audio_file.to_bytes_io()
+    job.set_status(progress=0.1, message=f"Started embedding creation {voice_name}.")
     embedding = t2v.voice2embedding(audio_file=bytesio, voice_name=voice_name)
 
     # write voice embedding to file
     if save:
+        job.set_status(progress=0.98, message=f"Saving embedding {voice_name} to library.")
         embedding.save_to_speaker_lib()
 
     mf = MediaFile(file_name=f"{voice_name}.npz").from_bytesio(embedding.to_bytes_io(), copy=False)
@@ -94,6 +98,7 @@ def voice2embedding(
 
 @app.task_endpoint("/voice2voice")
 def voice2voice(
+        job: JobProgress,
         audio_file: AudioFile,
         voice_name: str,
 ):
@@ -106,12 +111,15 @@ def voice2voice(
     # inference
     audio_array, sample_rate = t2v.voice2voice(audio_file.to_bytes_io(), voice_name)
 
+    job.set_status(progress=0.1, message=f"Started voice2voice {voice_name}.")
+
     # convert to file
     af = AudioFile(file_name=f"voice2voice_{voice_name}.wav").from_np_array(
         np_array=audio_array,
         sr=sample_rate,
         file_type="wav"
     )
+
     return af
 
 
