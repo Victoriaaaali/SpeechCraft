@@ -42,6 +42,8 @@ https://github.com/SocAIty/SpeechCraft/assets/7961324/71a039c7-e665-4576-91c7-72
 
 The code runs fine on Windows and Linux. 
 
+### Note: pypi package ATM broken. Clone the repository instead and work with the clone. I'm going to fix it and release a new version tomorrow.
+
 ### With PIP
 ```bash
 # from PyPi (without web API)
