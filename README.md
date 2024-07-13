@@ -249,6 +249,11 @@ Below is a list of some known non-speech sounds, but we are finding more every d
 To use a different language use the corresponding voice parameter to it like "de_speaker_1".
 You find preset voices and languages in the assets folder.
 
+## © License
+
+SpeechCraft and Bark is licensed under the MIT License. 
+
+
 ## Voice Cloning guide
 
 Make sure these things are NOT in your voice input: (in no particular order)
