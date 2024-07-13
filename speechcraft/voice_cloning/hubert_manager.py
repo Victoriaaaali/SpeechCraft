@@ -6,9 +6,6 @@ import huggingface_hub
 
 
 class HuBERTManager:
-
-
-
     @staticmethod
     def make_sure_hubert_installed(download_url: str = 'https://dl.fbaipublicfiles.com/hubert/hubert_base_ls960.pt',
                                    model_path: str = 'hubert_base_ls960'):
@@ -28,7 +25,7 @@ class HuBERTManager:
     def make_sure_tokenizer_installed(
             local_tokenizer_path: str,
             model: str = 'hubert_base_ls960_23.pth',
-            repo: str = 'GitMylo/speechcraft-voice-cloning',
+            repo: str = 'GitMylo/bark-voice-cloning',
     ):
         """
         Downloads the tokenizer from the huggingface hub if not already downloaded

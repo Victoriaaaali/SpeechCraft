@@ -102,6 +102,10 @@ audio = AudioFile().from_np_array(audio_numpy, sr=sample_rate)
 audio.save("my_new_audio.wav")
 ```
 
+Note: The first time your are using speechcraft it will download the models.
+These files are quite big and can take a while to download.
+
+
 ## Web Service
 
 ![image of openapi server](docs/server_screenshot.png)
@@ -130,7 +134,7 @@ If this fails, you can download the files manually or with the model_downloader.
 NOTE: The Webservice is built with FastTaskAPI. In this regard, for each request it will create a task and return a job id
 
 
-We highly recommend to use the media-toolkit package for file transmission. It will make your life much easier.
+We highly recommend to use [media-toolkit](https://github.com/SocAIty/media-toolkit) for file transmission. It will make your life much easier.
 ```python
 from media_toolkit import AudioFile
 
