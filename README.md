@@ -42,8 +42,6 @@ https://github.com/SocAIty/SpeechCraft/assets/7961324/71a039c7-e665-4576-91c7-72
 
 The code runs fine on Windows and Linux. 
 
-### Note: pypi package ATM broken. Clone the repository instead and work with the clone. I'm going to fix it and release a new version tomorrow.
-
 ### With PIP
 ```bash
 # from PyPi (without web API)
@@ -58,7 +56,8 @@ For windows you will also need to install fairseq from a different source.
 pip install fairseq@https://github.com/Sharrnah/fairseq/releases/download/v0.12.4/fairseq-0.12.4-cp310-cp310-win_amd64.whl
 `
 
-To use a GPU don't forget to install pytorch GPU:
+To use a GPU don't forget to install [pytorch GPU](https://pytorch.org/get-started/locally/) with your correct 
+[cuda](https://developer.nvidia.com/cuda-downloads) version.
 `pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118`
 
 
@@ -111,9 +110,8 @@ audio.save("my_new_audio.wav")
 From python:
 
 ```python
-import speechcraft as sc
-
-sc.start_server(port=8009)
+from speechcraft.server import start_server
+start_server(port=8009)
 ```
 
 With .bat file
