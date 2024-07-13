@@ -4,12 +4,8 @@ import torchaudio
 import torch
 
 from speechcraft.core.voice_embedding import VoiceEmbedding
-
 from speechcraft.supp.model_downloader import get_hubert_manager_and_model
 from speechcraft.supp.utils import get_cpu_or_gpu
-
-
-
 
 def voice2embedding(audio_file: BytesIO | str, voice_name: str = "new_speaker"):
     """

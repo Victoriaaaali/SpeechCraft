@@ -82,27 +82,27 @@ logger = logging.getLogger(__name__)
 
 REMOTE_MODEL_PATHS = {
     "text_small": {
-        "repo_id": "suno/speechcraft",
+        "repo_id": "suno/bark",
         "file_name": "text.pt",
     },
     "coarse_small": {
-        "repo_id": "suno/speechcraft",
+        "repo_id": "suno/bark",
         "file_name": "coarse.pt",
     },
     "fine_small": {
-        "repo_id": "suno/speechcraft",
+        "repo_id": "suno/bark",
         "file_name": "fine.pt",
     },
     "text": {
-        "repo_id": "suno/speechcraft",
+        "repo_id": "suno/bark",
         "file_name": "text_2.pt",
     },
     "coarse": {
-        "repo_id": "suno/speechcraft",
+        "repo_id": "suno/bark",
         "file_name": "coarse_2.pt",
     },
     "fine": {
-        "repo_id": "suno/speechcraft",
+        "repo_id": "suno/bark",
         "file_name": "fine_2.pt",
     },
 }

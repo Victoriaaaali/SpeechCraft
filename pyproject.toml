@@ -25,6 +25,7 @@ dependencies = [
     "scipy",
     "tokenizers",
     "torch",
+    "torchaudio",
     "tqdm",
     "transformers"
 ]
@@ -34,11 +35,9 @@ source = "https://github.com/SocAIty/SpeechCraft"
 
 [project.optional-dependencies]
 full = [
+    "fastapi",
     "fast-task-api>=0.0.3"
 ]
-
-[tool.setuptools]
-packages = ["speechcraft"]
 
 [tool.setuptools.package-data]
 bark = ["assets/prompts/*.npz", "assets/prompts/v2/*.npz"]

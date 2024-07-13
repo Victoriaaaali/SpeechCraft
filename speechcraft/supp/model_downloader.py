@@ -3,12 +3,13 @@ import os.path
 from speechcraft.core.generation import preload_models, load_codec_model
 from speechcraft.settings import MODELS_DIR, USE_GPU
 from speechcraft.supp.utils import get_cpu_or_gpu
-from speechcraft.voice_cloning.custom_tokenizer import CustomTokenizer
-from speechcraft.voice_cloning.hubert_manager import HuBERTManager
-from speechcraft.voice_cloning.pre_kmeans_hubert import CustomHubert
-
 
 def get_hubert_manager_and_model(install_path: str = None):
+    # Imports need to be here to avoid "circular" import error.
+    # The reason in particular is not as clear. But works this way.
+    from speechcraft.voice_cloning.custom_tokenizer import CustomTokenizer
+    from speechcraft.voice_cloning.hubert_manager import HuBERTManager
+    from speechcraft.voice_cloning.pre_kmeans_hubert import CustomHubert
 
     if install_path is None:
         install_path = MODELS_DIR

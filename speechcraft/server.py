@@ -1,7 +1,11 @@
 import argparse
-import fastapi
 
-from fast_task_api import FastTaskAPI, JobProgress, AudioFile, MediaFile
+try:
+    import fastapi
+    from fast_task_api import FastTaskAPI, JobProgress, AudioFile, MediaFile
+except ImportError:
+    raise ImportError("Please install the full version of speechcraft with pip install speechcraft[server]"
+                      " to use the server functionality.")
 
 import speechcraft as t2v
 from speechcraft.supp.model_downloader import download_all_models_init
